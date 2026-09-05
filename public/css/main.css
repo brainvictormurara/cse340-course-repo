@@ -1,0 +1,161 @@
+:root {
+  --primary: #174c5b;
+  --primary-dark: #103640;
+  --accent: #d99a2b;
+  --background: #eef4f5;
+  --surface: #ffffff;
+  --text: #1f2933;
+  --muted: #52606d;
+  --border: #d8e1e4;
+  --shadow: 0 10px 30px rgba(23, 76, 91, 0.12);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 16px;
+}
+
+body {
+  background: linear-gradient(135deg, #eef4f5 0%, #dcebed 100%);
+  color: var(--text);
+  font-family: Arial, Helvetica, sans-serif;
+  line-height: 1.6;
+  margin: 0;
+  min-height: 100vh;
+}
+
+nav {
+  background-color: var(--primary);
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.16);
+  padding: 0 1.25rem;
+}
+
+nav ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  list-style: none;
+  margin: 0 auto;
+  max-width: 1100px;
+  padding: 1rem 0;
+}
+
+nav a {
+  border-radius: 6px;
+  color: #ffffff;
+  display: block;
+  font-weight: 700;
+  padding: 0.65rem 1rem;
+  text-decoration: none;
+  transition: background-color 0.2s ease;
+}
+
+nav a:hover,
+nav a:focus-visible {
+  background-color: var(--primary-dark);
+  color: #ffffff;
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+main {
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  box-shadow: var(--shadow);
+  margin: 2.5rem auto;
+  max-width: 1000px;
+  padding: 2.5rem;
+  width: calc(100% - 2rem);
+}
+
+h1 {
+  color: var(--primary-dark);
+  font-size: clamp(2rem, 5vw, 3rem);
+  line-height: 1.2;
+  margin: 0 0 1.25rem;
+}
+
+h2 {
+  color: var(--primary);
+  font-size: clamp(1.35rem, 3vw, 1.8rem);
+  line-height: 1.3;
+}
+
+p {
+  color: var(--muted);
+  font-size: 1.05rem;
+}
+
+main ul {
+  display: grid;
+  gap: 1rem;
+  list-style: none;
+  margin: 1.5rem 0 0;
+  padding: 0;
+}
+
+main li {
+  align-items: center;
+  background-color: #f7fafb;
+  border-left: 5px solid var(--accent);
+  border-radius: 8px;
+  display: flex;
+  gap: 1rem;
+  padding: 1rem 1.25rem;
+}
+
+main li img {
+  flex-shrink: 0;
+  height: 80px;
+  object-fit: contain;
+  width: 80px;
+}
+
+.main-logo {
+  display: block;
+  height: auto;
+  margin: 2rem auto 0;
+  max-width: 360px;
+  width: 100%;
+}
+
+footer {
+  color: var(--muted);
+  margin: 0 auto;
+  max-width: 1000px;
+  padding: 0 1rem 2rem;
+  text-align: center;
+}
+
+footer p {
+  font-size: 0.95rem;
+  margin: 0;
+}
+
+@media (max-width: 600px) {
+  nav {
+    padding: 0 0.75rem;
+  }
+
+  nav ul {
+    justify-content: center;
+  }
+
+  nav a {
+    padding: 0.55rem 0.7rem;
+  }
+
+  main {
+    margin: 1.25rem auto;
+    padding: 1.5rem;
+  }
+
+  main li {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
