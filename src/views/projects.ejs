@@ -3,12 +3,21 @@
 <main>
   <h1><%= title %></h1>
 
-  <h2>Upcoming Service Projects</h2>
+  <p>Explore the service projects available through our partner organizations.</p>
 
   <ul>
-    <li>Park Cleanup - Join us to clean up local parks and make them beautiful!</li>
-    <li>Food Drive - Help collect and distribute food to those in need.</li>
-    <li>Community Tutoring - Volunteer to tutor students in various subjects.</li>
+    <% projects.forEach((project) => { %>
+      <li>
+        <div>
+          <strong><%= project.name %></strong>
+          <p><%= project.description %></p>
+          <p>
+            Organization:
+            <%= project.organization_name %>
+          </p>
+        </div>
+      </li>
+    <% }); %>
   </ul>
 </main>
 

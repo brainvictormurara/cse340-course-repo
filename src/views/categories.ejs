@@ -6,10 +6,11 @@
   <p>Explore our service project categories:</p>
 
   <ul>
-    <li>Environmental</li>
-    <li>Educational</li>
-    <li>Community Service</li>
-    <li>Health and Wellness</li>
+    <% categories.forEach((category) => { %>
+      <li>
+        <strong><%= category.name %></strong>
+      </li>
+    <% }); %>
   </ul>
 </main>
 

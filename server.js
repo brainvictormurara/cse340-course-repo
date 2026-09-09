@@ -1,7 +1,9 @@
 import express from "express";
 import { fileURLToPath } from "url";
 import path from "path";
-
+import { getAllOrganizations } from "./src/models/organizations.js";
+import { getAllProjects } from "./src/models/projects.js";
+import { getAllCategories } from "./src/models/categories.js";
 const nodeEnv = process.env.NODE_ENV?.toLowerCase() || "production";
 const port = process.env.PORT || 3000;
 
@@ -26,17 +28,38 @@ app.get("/", async (req, res) => {
 });
 
 app.get("/organizations", async (req, res) => {
-  const title = "Our Partner Organizations";
-  res.render("organizations", { title });
+  try {
+    const title = "Our Partner Organizations";
+    const organizations = await getAllOrganizations();
+
+    res.render("organizations", { title, organizations });
+  } catch (error) {
+    console.error("Error retrieving organizations:", error);
+    res.status(500).send("Unable to retrieve organizations.");
+  }
 });
 
 app.get("/projects", async (req, res) => {
-  const title = "Service Projects";
-  res.render("projects", { title });
+  try {
+    const title = "Service Projects";
+    const projects = await getAllProjects();
+
+    res.render("projects", { title, projects });
+  } catch (error) {
+    console.error("Error retrieving projects:", error);
+    res.status(500).send("Unable to retrieve projects.");
+  }
 });
 app.get("/categories", async (req, res) => {
-  const title = "Service Project Categories";
-  res.render("categories", { title });
+  try {
+    const title = "Service Project Categories";
+    const categories = await getAllCategories();
+
+    res.render("categories", { title, categories });
+  } catch (error) {
+    console.error("Error retrieving categories:", error);
+    res.status(500).send("Unable to retrieve categories.");
+  }
 });
 app.listen(port, () => {
   console.log(`Server is running at http://127.0.0.1:${port}`);
