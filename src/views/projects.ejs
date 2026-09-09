@@ -9,12 +9,18 @@
     <% projects.forEach((project) => { %>
       <li>
         <div>
-          <strong><%= project.name %></strong>
+          <strong>
+            <%= new Date(project.date).toLocaleDateString("en-GB", {
+              day: "numeric",
+              month: "long",
+              year: "numeric",
+              timeZone: "UTC"
+            }) %>:
+            <%= project.title %> (<%= project.organization_name %>)
+          </strong>
+
           <p><%= project.description %></p>
-          <p>
-            Organization:
-            <%= project.organization_name %>
-          </p>
+          <p>Location: <%= project.location %></p>
         </div>
       </li>
     <% }); %>
