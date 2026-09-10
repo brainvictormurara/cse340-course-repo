@@ -1,9 +1,9 @@
 import pool from "../database.js";
 
-export async function getAllOrganizations() {
+export const getAllOrganizations = async () => {
   const result = await pool.query(
     "SELECT * FROM organization ORDER BY name"
   );
 
   return result.rows;
-}
+};
