@@ -115,6 +115,14 @@ main li img {
   width: 80px;
 }
 
+.organization-logo {
+  display: block;
+  height: 120px;
+  margin: 1rem 0;
+  object-fit: contain;
+  width: 120px;
+}
+
 .category-tags {
   display: flex;
   flex-wrap: wrap;
