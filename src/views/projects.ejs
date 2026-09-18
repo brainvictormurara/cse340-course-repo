@@ -16,7 +16,10 @@
               year: "numeric",
               timeZone: "UTC"
             }) %>:
-            <%= project.title %> (<%= project.organization_name %>)
+            <a href="/project/<%= project.project_id %>">
+              <%= project.title %>
+            </a>
+            (<%= project.organization_name %>)
           </strong>
 
           <p><%= project.description %></p>

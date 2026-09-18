@@ -1,0 +1,32 @@
+<%- include("partials/header") %>
+
+<main>
+  <h1><%= title %></h1>
+
+  <p>
+    <strong>Date:</strong>
+    <%= new Date(project.date).toLocaleDateString("en-GB", {
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+      timeZone: "UTC"
+    }) %>
+  </p>
+  <p><strong>Organization:</strong> <%= project.organization_name %></p>
+  <p><strong>Location:</strong> <%= project.location %></p>
+  <p><%= project.description %></p>
+
+  <% if (categories.length > 0) { %>
+    <div class="category-tags" aria-label="Project categories">
+      <% categories.forEach((category) => { %>
+        <a class="category-tag" href="/category/<%= category.category_id %>">
+          <%= category.name %>
+        </a>
+      <% }); %>
+    </div>
+  <% } %>
+
+  <p><a href="/projects">Back to upcoming projects</a></p>
+</main>
+
+<%- include("partials/footer") %>

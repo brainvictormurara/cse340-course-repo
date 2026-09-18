@@ -115,6 +115,30 @@ main li img {
   width: 80px;
 }
 
+.category-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin: 1.5rem 0;
+}
+
+.category-tag {
+  background-color: var(--primary);
+  border-radius: 999px;
+  color: #ffffff;
+  font-weight: 700;
+  padding: 0.35rem 0.8rem;
+  text-decoration: none;
+}
+
+.category-tag:hover,
+.category-tag:focus-visible {
+  background-color: var(--primary-dark);
+  color: #ffffff;
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
 .main-logo {
   display: block;
   height: auto;
