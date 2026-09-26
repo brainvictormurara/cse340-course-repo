@@ -1,5 +1,23 @@
 import pool from "../database.js";
 
+export const createProject = async (title, description, location, date, organizationId) => {
+  const result = await pool.query(
+    `INSERT INTO project (title, description, location, date, organization_id)
+     VALUES ($1, $2, $3, $4, $5) RETURNING project_id`,
+    [title, description, location, date, organizationId]
+  );
+  return result.rows[0].project_id;
+};
+
+export const updateProject = async (id, title, description, location, date, organizationId) => {
+  const result = await pool.query(
+    `UPDATE project SET title = $1, description = $2, location = $3,
+     date = $4, organization_id = $5 WHERE project_id = $6 RETURNING project_id`,
+    [title, description, location, date, organizationId, id]
+  );
+  return result.rows[0]?.project_id;
+};
+
 export const getAllProjects = async () => {
   const result = await pool.query(`
     SELECT
@@ -7,7 +25,7 @@ export const getAllProjects = async () => {
       project.title,
       project.description,
       project.location,
-      project.date,
+      to_char(project.date, 'YYYY-MM-DD') AS date,
       project.organization_id,
       organization.name AS organization_name
     FROM project
@@ -26,7 +44,7 @@ export const getUpcomingProjects = async (number_of_projects) => {
         project.project_id,
         project.title,
         project.description,
-        project.date,
+        to_char(project.date, 'YYYY-MM-DD') AS date,
         project.location,
         project.organization_id,
         organization.name AS organization_name
@@ -50,7 +68,7 @@ export const getProjectDetails = async (id) => {
         project.project_id,
         project.title,
         project.description,
-        project.date,
+        to_char(project.date, 'YYYY-MM-DD') AS date,
         project.location,
         project.organization_id,
         organization.name AS organization_name

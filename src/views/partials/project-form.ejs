@@ -1,0 +1,67 @@
+<% const editing = projectId !== null;
+   const selectedOrganizationExists = organizations.some((organization) =>
+     String(organization.organization_id) === String(Number(formData.organizationId))); %>
+<p>All fields are required.</p>
+<% if (Object.keys(errors).length) { %>
+  <div class="form-errors" role="alert" aria-labelledby="form-errors-title">
+    <h2 id="form-errors-title">Please check your project details</h2>
+    <ul>
+      <% Object.entries(errors).forEach(([field, message]) => { %>
+        <li><a href="#<%= field %>"><%= message %></a></li>
+      <% }); %>
+    </ul>
+  </div>
+<% } %>
+<% if (!organizations.length) { %>
+  <p>Create an organization before saving a project. <a href="/new-organization">Create Organization</a></p>
+<% } %>
+<form class="project-form" action="<%= editing ? '/edit-project/' + projectId : '/new-project' %>" method="POST">
+  <div class="form-group">
+    <label for="title">Project Title</label>
+    <input type="text" id="title" name="title" required minlength="3" maxlength="150"
+      value="<%= formData.title %>" aria-invalid="<%= Boolean(errors.title) %>"
+      <% if (errors.title) { %>aria-describedby="title-error"<% } %>>
+    <% if (errors.title) { %><p class="field-error" id="title-error"><%= errors.title %></p><% } %>
+  </div>
+  <div class="form-group">
+    <label for="description">Description</label>
+    <textarea id="description" name="description" required maxlength="1000" rows="5"
+      aria-invalid="<%= Boolean(errors.description) %>"
+      <% if (errors.description) { %>aria-describedby="description-error"<% } %>
+    ><%= formData.description %></textarea>
+    <% if (errors.description) { %><p class="field-error" id="description-error"><%= errors.description %></p><% } %>
+  </div>
+  <div class="form-group">
+    <label for="location">Location</label>
+    <input type="text" id="location" name="location" required maxlength="200"
+      value="<%= formData.location %>" aria-invalid="<%= Boolean(errors.location) %>"
+      <% if (errors.location) { %>aria-describedby="location-error"<% } %>>
+    <% if (errors.location) { %><p class="field-error" id="location-error"><%= errors.location %></p><% } %>
+  </div>
+  <div class="form-group">
+    <label for="date">Date</label>
+    <input type="date" id="date" name="date" required min="0001-01-01" max="9999-12-31"
+      value="<%= formData.date %>" aria-invalid="<%= Boolean(errors.date) %>"
+      <% if (errors.date) { %>aria-describedby="date-error"<% } %>>
+    <% if (errors.date) { %><p class="field-error" id="date-error"><%= errors.date %> Submitted value: <%= formData.date %></p><% } %>
+  </div>
+  <div class="form-group">
+    <label for="organizationId">Organization</label>
+    <select id="organizationId" name="organizationId" required
+      aria-invalid="<%= Boolean(errors.organizationId) %>"
+      <% if (errors.organizationId) { %>aria-describedby="organizationId-error"<% } %>>
+      <option value="">Select an organization</option>
+      <% if (formData.organizationId && !selectedOrganizationExists) { %>
+        <option value="<%= formData.organizationId %>" selected disabled>Unavailable organization (<%= formData.organizationId %>)</option>
+      <% } %>
+      <% organizations.forEach((organization) => { %>
+        <option value="<%= organization.organization_id %>" <%= String(organization.organization_id) === String(Number(formData.organizationId)) ? 'selected' : '' %>><%= organization.name %></option>
+      <% }); %>
+    </select>
+    <% if (errors.organizationId) { %><p class="field-error" id="organizationId-error"><%= errors.organizationId %></p><% } %>
+  </div>
+  <div class="form-actions">
+    <button class="button" type="submit" <% if (!organizations.length) { %>disabled<% } %>><%= editing ? 'Update Project' : 'Create Project' %></button>
+    <a href="<%= editing ? '/project/' + projectId : '/projects' %>">Cancel</a>
+  </div>
+</form>

@@ -191,3 +191,53 @@ footer p {
     flex-direction: column;
   }
 }
+
+.button {
+  display: inline-block;
+  background: var(--primary);
+  color: #ffffff;
+  border: 2px solid transparent;
+  border-radius: 6px;
+  padding: 0.65rem 1rem;
+  font: inherit;
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.button:hover { background: var(--primary-dark); }
+
+.button:focus-visible,
+.organization-form input:focus-visible,
+.organization-form textarea:focus-visible,
+.project-form input:focus-visible,
+.project-form textarea:focus-visible,
+.project-form select:focus-visible,
+.category-form input:focus-visible {
+  outline: 3px solid var(--primary);
+  outline-offset: 3px;
+}
+
+.organization-form, .project-form, .category-form { max-width: 42rem; }
+.form-group { margin-bottom: 1.5rem; }
+.form-group label { display: block; font-weight: 700; margin-bottom: 0.4rem; }
+.form-group input,
+.form-group textarea,
+.form-group select {
+  display: block;
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid var(--muted);
+  border-radius: 6px;
+  background: var(--surface);
+  color: var(--text);
+  font: inherit;
+}
+.form-group textarea { resize: vertical; }
+.form-group .field-hint { font-size: 0.9rem; margin: 0.4rem 0; }
+.form-actions { display: flex; align-items: center; flex-wrap: wrap; gap: 1rem; }
+.form-errors { border: 2px solid #a12622; border-radius: 6px; padding: 1rem; margin: 1.5rem 0; }
+.form-errors h2 { color: #a12622; margin-top: 0; }
+.form-errors a, .field-error { color: #a12622; }
+.form-errors li { border-left-color: #a12622; }
+.form-group [aria-invalid="true"] { border: 2px solid #a12622; }

@@ -11,6 +11,9 @@ const __dirname = path.dirname(__filename);
 
 const app = express();
 
+// Parse organization form submissions before the routes run.
+app.use(express.urlencoded({ extended: false }));
+
 // Serve static files from the public directory
 app.use(express.static(path.join(__dirname, "public")));
 

@@ -2,6 +2,7 @@
 
 <main>
   <h1><%= title %></h1>
+  <p><a class="button" href="/edit-project/<%= project.project_id %>">Edit Project</a></p>
 
   <p>
     <strong>Date:</strong>
@@ -12,7 +13,7 @@
       timeZone: "UTC"
     }) %>
   </p>
-  <p><strong>Organization:</strong> <%= project.organization_name %></p>
+  <p><strong>Organization:</strong> <a href="/organization/<%= project.organization_id %>"><%= project.organization_name %></a></p>
   <p><strong>Location:</strong> <%= project.location %></p>
   <p><%= project.description %></p>
 

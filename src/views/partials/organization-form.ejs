@@ -1,0 +1,57 @@
+<% const editing = organizationId !== null; %>
+<p>All fields are required.</p>
+<% if (Object.keys(errors).length) { %>
+  <div class="form-errors" role="alert" aria-labelledby="form-errors-title">
+    <h2 id="form-errors-title">Please check your organization details</h2>
+    <ul>
+      <% Object.entries(errors).forEach(([field, message]) => { %>
+        <li>
+          <% if (field === "form") { %>
+            <%= message %>
+          <% } else { %>
+            <a href="#<%= field %>"><%= message %></a>
+          <% } %>
+        </li>
+      <% }); %>
+    </ul>
+  </div>
+<% } %>
+<form class="organization-form" action="<%= editing ? '/edit-organization/' + organizationId : '/new-organization' %>" method="POST">
+  <div class="form-group">
+    <label for="name">Organization Name</label>
+    <input type="text" id="name" name="name" required minlength="3" maxlength="150"
+      value="<%= formData.name %>" aria-invalid="<%= Boolean(errors.name) %>"
+      <% if (errors.name) { %>aria-describedby="name-error"<% } %>>
+    <% if (errors.name) { %><p class="field-error" id="name-error"><%= errors.name %></p><% } %>
+  </div>
+  <div class="form-group">
+    <label for="description">Description</label>
+    <textarea id="description" name="description" required maxlength="500" rows="5"
+      aria-invalid="<%= Boolean(errors.description) %>"
+      aria-describedby="description-hint<%= errors.description ? ' description-error' : '' %>"
+    ><%= formData.description %></textarea>
+    <p class="field-hint" id="description-hint">Describe your organization in up to 500 characters.</p>
+    <% if (errors.description) { %><p class="field-error" id="description-error"><%= errors.description %></p><% } %>
+  </div>
+  <div class="form-group">
+    <label for="contactEmail">Contact Email</label>
+    <input type="email" id="contactEmail" name="contactEmail" required maxlength="255" autocomplete="email"
+      value="<%= formData.contactEmail %>" aria-invalid="<%= Boolean(errors.contactEmail) %>"
+      <% if (errors.contactEmail) { %>aria-describedby="contactEmail-error"<% } %>>
+    <% if (errors.contactEmail) { %><p class="field-error" id="contactEmail-error"><%= errors.contactEmail %></p><% } %>
+  </div>
+  <% if (editing) { %>
+    <div class="form-group">
+      <label for="logoFilename">Logo Filename</label>
+      <input type="text" id="logoFilename" name="logoFilename" required maxlength="255"
+        value="<%= formData.logoFilename %>" aria-invalid="<%= Boolean(errors.logoFilename) %>"
+        aria-describedby="logo-hint<%= errors.logoFilename ? ' logoFilename-error' : '' %>">
+      <p class="field-hint" id="logo-hint">Use the filename of an image already available on this site, such as placeholder-logo.png.</p>
+      <% if (errors.logoFilename) { %><p class="field-error" id="logoFilename-error"><%= errors.logoFilename %></p><% } %>
+    </div>
+  <% } %>
+  <div class="form-actions">
+    <button class="button" type="submit"><%= editing ? 'Update Organization' : 'Create Organization' %></button>
+    <a href="<%= editing ? '/organization/' + organizationId : '/organizations' %>">Cancel</a>
+  </div>
+</form>

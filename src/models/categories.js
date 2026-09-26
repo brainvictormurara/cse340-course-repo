@@ -1,5 +1,21 @@
 import pool from "../database.js";
 
+export const createCategory = async (name) => {
+  const result = await pool.query(
+    "INSERT INTO category (name) VALUES ($1) RETURNING category_id",
+    [name]
+  );
+  return result.rows[0].category_id;
+};
+
+export const updateCategory = async (id, name) => {
+  const result = await pool.query(
+    "UPDATE category SET name = $1 WHERE category_id = $2 RETURNING category_id",
+    [name, id]
+  );
+  return result.rows[0]?.category_id;
+};
+
 export const getAllCategories = async () => {
   const result = await pool.query(
     "SELECT * FROM category ORDER BY name"

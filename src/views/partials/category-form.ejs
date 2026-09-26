@@ -1,0 +1,19 @@
+<% const editing = categoryId !== null; %>
+<p>Category name is required.</p>
+<% if (error) { %>
+  <div class="form-errors" role="alert">
+    <p id="name-error"><a href="#name"><%= error %></a></p>
+  </div>
+<% } %>
+<form class="category-form" action="<%= editing ? '/edit-category/' + categoryId : '/new-category' %>" method="POST">
+  <div class="form-group">
+    <label for="name">Category Name</label>
+    <input type="text" id="name" name="name" required maxlength="100"
+      value="<%= name %>" aria-invalid="<%= Boolean(error) %>"
+      <% if (error) { %>aria-describedby="name-error"<% } %>>
+  </div>
+  <div class="form-actions">
+    <button class="button" type="submit"><%= editing ? 'Update Category' : 'Create Category' %></button>
+    <a href="<%= editing ? '/category/' + categoryId : '/categories' %>">Cancel</a>
+  </div>
+</form>
