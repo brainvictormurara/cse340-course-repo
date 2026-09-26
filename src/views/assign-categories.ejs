@@ -1,0 +1,28 @@
+<%- include("partials/header") %>
+<main>
+  <h1><%= title %></h1>
+  <p>Choose categories for <strong><%= project.title %></strong>. Uncheck all categories to remove all assignments.</p>
+  <% if (error) { %>
+    <div class="form-errors" role="alert"><p id="categories-error"><%= error %></p></div>
+  <% } %>
+  <form action="/project/<%= project.project_id %>/categories" method="POST">
+    <fieldset <% if (error) { %>aria-describedby="categories-error"<% } %>>
+      <legend>Project categories</legend>
+      <% if (!categories.length) { %>
+        <p>No categories are available.</p>
+      <% } %>
+      <% categories.forEach((category) => { %>
+        <p>
+          <input type="checkbox" id="category-<%= category.category_id %>" name="categoryIds"
+            value="<%= category.category_id %>"<% if (selectedIds.includes(category.category_id)) { %> checked<% } %>>
+          <label for="category-<%= category.category_id %>"><%= category.name %></label>
+        </p>
+      <% }); %>
+    </fieldset>
+    <p class="form-actions">
+      <button class="button" type="submit">Save Categories</button>
+      <a href="/project/<%= project.project_id %>">Cancel</a>
+    </p>
+  </form>
+</main>
+<%- include("partials/footer") %>

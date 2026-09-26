@@ -1,5 +1,40 @@
 import pool from "../database.js";
 
+export const replaceProjectCategories = async (projectId, categoryIds) => {
+  const client = await pool.connect();
+  try {
+    await client.query("BEGIN");
+    // Serialize assignment changes for this project and prevent deletion during the save.
+    const project = await client.query(
+      "SELECT project_id FROM project WHERE project_id = $1 FOR UPDATE", [projectId]
+    );
+    if (!project.rowCount) {
+      await client.query("ROLLBACK");
+      return "not-found";
+    }
+    const categories = await client.query(
+      "SELECT category_id FROM category WHERE category_id = ANY($1::integer[]) FOR KEY SHARE",
+      [categoryIds]
+    );
+    if (categories.rowCount !== categoryIds.length) {
+      await client.query("ROLLBACK");
+      return "invalid-categories";
+    }
+    await client.query("DELETE FROM project_category WHERE project_id = $1", [projectId]);
+    await client.query(
+      `INSERT INTO project_category (project_id, category_id)
+       SELECT $1, unnest($2::integer[])`, [projectId, categoryIds]
+    );
+    await client.query("COMMIT");
+    return "saved";
+  } catch (error) {
+    await client.query("ROLLBACK");
+    throw error;
+  } finally {
+    client.release();
+  }
+};
+
 export const createProject = async (title, description, location, date, organizationId) => {
   const result = await pool.query(
     `INSERT INTO project (title, description, location, date, organization_id)

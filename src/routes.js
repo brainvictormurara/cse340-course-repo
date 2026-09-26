@@ -20,6 +20,8 @@ import {
   processEditProjectForm,
   projectValidation,
   validateProjectId,
+  showCategoryAssignments,
+  processCategoryAssignments,
 } from "./controllers/projects.js";
 import {
   showCategoriesPage,
@@ -48,6 +50,8 @@ router.post("/new-project", projectValidation, processNewProjectForm);
 router.get("/edit-project/:id", validateProjectId, showEditProjectForm);
 router.post("/edit-project/:id", validateProjectId, projectValidation, processEditProjectForm);
 router.get("/project/:id", showProjectDetailsPage);
+router.get("/project/:id/categories", validateProjectId, showCategoryAssignments);
+router.post("/project/:id/categories", validateProjectId, processCategoryAssignments);
 router.get("/categories", showCategoriesPage);
 router.get("/new-category", showNewCategoryForm);
 router.post("/new-category", categoryValidation, processNewCategoryForm);

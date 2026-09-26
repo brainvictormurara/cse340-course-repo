@@ -1,4 +1,5 @@
 import { body, validationResult } from "express-validator";
+import { getAllCategories } from "../models/categories.js";
 import { getAllOrganizations, getOrganizationById } from "../models/organizations.js";
 import {
   getUpcomingProjects,
@@ -6,6 +7,7 @@ import {
   getProjectDetails,
   createProject,
   updateProject,
+  replaceProjectCategories,
 } from "../models/projects.js";
 
 const NUMBER_OF_UPCOMING_PROJECTS = 5;
@@ -21,6 +23,43 @@ const projectNotFound = (res) => res.status(404).render("error", {
 export const validateProjectId = (req, res, next) => {
   if (!isValidId(req.params.id)) return projectNotFound(res);
   next();
+};
+
+const renderCategoryAssignments = async (res, project, selectedIds, error = null) => {
+  const categories = await getAllCategories();
+  return res.status(error ? 400 : 200).render("assign-categories", {
+    title: "Update Categories", project, categories, selectedIds, error,
+  });
+};
+
+export const showCategoryAssignments = async (req, res, next) => {
+  try {
+    const project = await getProjectDetails(req.params.id);
+    if (!project) return projectNotFound(res);
+    const assigned = await getCategoriesByProject(project.project_id);
+    return await renderCategoryAssignments(res, project, assigned.map((category) => category.category_id));
+  } catch (error) { next(error); }
+};
+
+export const processCategoryAssignments = async (req, res, next) => {
+  try {
+    const project = await getProjectDetails(req.params.id);
+    if (!project) return projectNotFound(res);
+    // Browsers omit the field entirely when all checkboxes are unchecked.
+    const submitted = req.body?.categoryIds;
+    const values = submitted === undefined ? [] : Array.isArray(submitted) ? submitted : [submitted];
+    const selectedIds = [...new Set(values.filter(isValidId).map(Number))];
+    if (!values.every(isValidId)) {
+      return await renderCategoryAssignments(res, project, selectedIds, "Select valid categories from the list.");
+    }
+    const result = await replaceProjectCategories(project.project_id, selectedIds);
+    if (result === "not-found") return projectNotFound(res);
+    if (result === "invalid-categories") {
+      return await renderCategoryAssignments(res, project, selectedIds,
+        "A selected category no longer exists. Review the available categories and save again.");
+    }
+    return res.redirect(303, `/project/${project.project_id}`);
+  } catch (error) { next(error); }
 };
 
 const requiredText = (field, label) => body(field)
