@@ -241,3 +241,19 @@ footer p {
 .form-errors a, .field-error { color: #a12622; }
 .form-errors li { border-left-color: #a12622; }
 .form-group [aria-invalid="true"] { border: 2px solid #a12622; }
+
+.auth-form { max-width: 32rem; }
+.auth-form input:focus-visible, .table-scroll:focus-visible {
+  outline: 3px solid var(--primary); outline-offset: 3px;
+}
+.messages { max-width: 1000px; margin: 1rem auto; width: calc(100% - 2rem); }
+.notice { padding: 1rem; border: 1px solid; border-radius: 6px; }
+.notice.success { background: #edf8f0; color: #205c34; }
+.notice.error { background: #fff1ef; color: #a12622; }
+.table-scroll { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; text-align: left; }
+caption { text-align: left; font-weight: 700; margin-bottom: 0.75rem; }
+th, td { padding: 0.85rem; border-bottom: 1px solid var(--border); }
+th { color: white; background: var(--primary); }
+tbody tr:nth-child(even) { background: #f7fafb; }
+td { overflow-wrap: anywhere; }

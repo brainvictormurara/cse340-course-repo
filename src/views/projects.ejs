@@ -4,7 +4,9 @@
   <h1><%= title %></h1>
 
   <p>Explore the service projects available through our partner organizations.</p>
+  <% if (isAdmin) { %>
   <p><a class="button" href="/new-project">Create Project</a></p>
+  <% } %>
 
   <ul>
     <% projects.forEach((project) => { %>

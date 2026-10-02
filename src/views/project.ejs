@@ -2,8 +2,12 @@
 
 <main>
   <h1><%= title %></h1>
+  <% if (isAdmin) { %>
   <p><a class="button" href="/edit-project/<%= project.project_id %>">Edit Project</a></p>
+  <% } %>
+  <% if (isAdmin) { %>
   <p><a class="button" href="/project/<%= project.project_id %>/categories">Update Categories</a></p>
+  <% } %>
 
   <p>
     <strong>Date:</strong>

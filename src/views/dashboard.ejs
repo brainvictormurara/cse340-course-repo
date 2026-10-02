@@ -1,0 +1,14 @@
+<%- include('partials/header') %>
+<main>
+  <h1>Dashboard</h1>
+  <h2>Welcome, <%= name %></h2>
+  <p><strong>Email (Username):</strong> <%= email %></p>
+  <p><strong>Role:</strong> <%= user.role_name %></p>
+  <% if (isAdmin) { %>
+    <h2>Administration</h2>
+    <p><a class="button" href="/users">View Registered Users</a></p>
+    <div class="form-actions"><a href="/new-organization">Create Organization</a><a href="/new-project">Create Project</a><a href="/new-category">Create Category</a></div>
+  <% } %>
+  <p><a href="/projects">Browse service projects</a></p>
+</main>
+<%- include('partials/footer') %>

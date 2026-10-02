@@ -1,0 +1,19 @@
+<%- include('partials/header') %>
+<main>
+  <h1>Registered Users</h1>
+  <p><%= users.length %> registered user<%= users.length === 1 ? '' : 's' %>.</p>
+  <div class="table-scroll" tabindex="0" role="region" aria-label="Registered users">
+    <table>
+      <caption>All registered users and their roles</caption>
+      <thead><tr><th scope="col">Name</th><th scope="col">Email (Username)</th><th scope="col">Role</th></tr></thead>
+      <tbody>
+        <% users.forEach(account => { %>
+          <tr><td><%= account.name %></td><td><%= account.email %></td><td><%= account.role_name %></td></tr>
+        <% }); %>
+      </tbody>
+    </table>
+  </div>
+  <% if (!users.length) { %><p>No users are registered.</p><% } %>
+  <p><a href="/dashboard">Back to dashboard</a></p>
+</main>
+<%- include('partials/footer') %>

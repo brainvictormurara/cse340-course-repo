@@ -2,7 +2,9 @@
 
 <main>
   <h1><%= organization.name %></h1>
+  <% if (isAdmin) { %>
   <p><a class="button" href="/edit-organization/<%= organization.organization_id %>">Edit Organization</a></p>
+  <% } %>
 
   <img
     class="organization-logo"
