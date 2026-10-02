@@ -33,6 +33,17 @@ app.set("view engine", "ejs");
 // Tell Express where to find the templates
 app.set("views", path.join(__dirname, "src/views"));
 
+// Template defaults so views (including error.ejs) render even if the session
+// middleware fails before loadCurrentUser runs.
+app.use((req, res, next) => {
+  res.locals.isLoggedIn = false;
+  res.locals.isAdmin = false;
+  res.locals.user = null;
+  res.locals.successMessages = [];
+  res.locals.errorMessages = [];
+  next();
+});
+
 const PgStore = connectPgSimple(session);
 app.use(session({
   name: "cse340.sid",

@@ -102,3 +102,27 @@ const management = ['/new-organization', '/edit-organization/1', '/new-project',
   assert.equal((await request(app).get('/users').set('Cookie', oldCookie)).headers.location, '/login');
   assert.doesNotMatch((await user.get('/login')).text, /href="\/logout"/);
  });
+
+test('session store failure renders the 500 error page instead of a template error', async () => {
+  const storeError = () => Object.assign(new Error('relation "user_sessions" does not exist'), { code: '42P01' });
+  class FailingStore extends session.MemoryStore {
+    failing = false;
+    get(sid, callback) { this.failing ? callback(storeError()) : super.get(sid, callback); }
+    set(sid, data, callback) { this.failing ? callback(storeError()) : super.set(sid, data, callback); }
+  }
+  const store = new FailingStore();
+  const visitor = request.agent(createApp({ sessionStore: store, sessionSecret: 'integration-test-secret', production: false }));
+  assert.equal((await visitor.get('/register')).status, 200);
+  store.failing = true;
+  const originalConsoleError = console.error;
+  const logged = [];
+  console.error = (...args) => logged.push(args.map(String).join(' '));
+  let response;
+  try { response = await visitor.get('/register'); } finally { console.error = originalConsoleError; }
+  assert.equal(response.status, 500);
+  assert.match(response.text, /500: Server Error/);
+  assert.match(response.text, /href="\/login"/);
+  assert.doesNotMatch(response.text, /is not defined|ReferenceError/);
+  assert.ok(logged.some(line => line.includes('user_sessions')), 'original store error is logged');
+  assert.ok(!logged.some(line => line.includes('is not defined')), 'no secondary template error');
+});
